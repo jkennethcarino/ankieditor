@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">AnkiDroid Editor</string>
+    <string name="app_name">AnkiEditor</string>
     <string name="action_settings">Settings</string>
 </resources>

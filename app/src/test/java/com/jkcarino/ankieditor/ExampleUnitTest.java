@@ -1,4 +1,4 @@
-package com.jkenneth.ankidroideditor;
+package com.jkcarino.ankieditor;
 
 import org.junit.Test;
 
