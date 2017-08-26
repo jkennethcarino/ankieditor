@@ -1,4 +1,18 @@
 <resources>
     <string name="app_name">AnkiEditor</string>
     <string name="action_settings">Settings</string>
+
+    <!-- No AnkiDroid Installed -->
+    <string name="title_no_ankidroid_installed">No AnkiDroid Installed</string>
+    <string name="msg_install_ankidroid">This app may not work correctly without the AnkiDroid app. Do you want to install AnkiDroid?</string>
+    <string name="install">Install</string>
+
+    <!-- AnkiDroid API permission -->
+    <string name="title_permissions_required">Permissions Required</string>
+    <string name="msg_ad_api_permission_required">This app may not work correctly without the permission to read/write AnkiDroid database. Open AnkiDroid advanced settings screen to enable AnkiDroid API.</string>
+    <string name="rationale_ad_api_permission_ask_again">This app needs permission to read/write AnkiDroid database.</string>
+    <string name="sb_permission_denied">Permission denied.</string>
+
+    <string name="text_type">Type:</string>
+    <string name="text_deck">Deck:</string>
 </resources>
