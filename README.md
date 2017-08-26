@@ -1,9 +1,9 @@
-AnkiDroid Editor
+AnkiEditor for AnkiDroid
 ======
 
-AnkiDroid Editor is an advanced note editor add-on for [AnkiDroid](https://github.com/ankidroid/Anki-Android).
+AnkiEditor is an advanced note editor plug-in for [AnkiDroid](https://github.com/ankidroid/Anki-Android).
 
 License
 -------
 
-AnkiDroid Editor is licensed under the [GNU General Public License v3.0 License](https://www.gnu.org/licenses/gpl.html).
+AnkiEditor is licensed under the [GNU General Public License v3.0 License](https://www.gnu.org/licenses/gpl.html).
