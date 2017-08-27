@@ -23,10 +23,6 @@ import android.support.annotation.NonNull;
 import com.jkcarino.ankieditor.util.AnkiDroidHelper;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,22 +39,6 @@ public class EditorPresenter implements EditorContract.Presenter {
         editorView.setPresenter(this);
     }
 
-    private <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
-        List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-            @Override
-            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
-
-        Map<K, V> result = new LinkedHashMap<>();
-        for (Map.Entry<K, V> entry : list) {
-            result.put(entry.getKey(), entry.getValue());
-        }
-        return result;
-    }
-
     @Override
     public void start() {
 
@@ -73,7 +53,8 @@ public class EditorPresenter implements EditorContract.Presenter {
     @Override
     public void populateNoteTypes() {
         if (editorView != null) {
-            Map<Long, String> noteTypes = sortByValue(ankiDroidHelper.getNoteTypes());
+            Map<Long, String> noteTypes =
+                    AnkiDroidHelper.sortByValue(ankiDroidHelper.getNoteTypes());
             List<Long> noteTypeIds = new ArrayList<>(noteTypes.keySet());
             List<String> noteTypesList = new ArrayList<>(noteTypes.values());
 
@@ -84,7 +65,8 @@ public class EditorPresenter implements EditorContract.Presenter {
     @Override
     public void populateNoteDecks() {
         if (editorView != null) {
-            Map<Long, String> noteDecks = sortByValue(ankiDroidHelper.getNoteDecks());
+            Map<Long, String> noteDecks =
+                    AnkiDroidHelper.sortByValue(ankiDroidHelper.getNoteDecks());
             List<Long> noteDeckIds = new ArrayList<>(noteDecks.keySet());
             List<String> noteDecksList = new ArrayList<>(noteDecks.values());
 
@@ -97,6 +79,18 @@ public class EditorPresenter implements EditorContract.Presenter {
         if (editorView != null) {
             String[] fields = ankiDroidHelper.getNoteTypeFields(noteTypeId);
             editorView.showNoteTypeFields(fields);
+        }
+    }
+
+    @Override
+    public void addNote(long typeId, long deckId, String[] fields) {
+        if (editorView != null) {
+            Long noteId = ankiDroidHelper.getApi().addNote(typeId, deckId, fields, null);
+            if (noteId != null) {
+                editorView.setAddNoteSuccess();
+            } else {
+                editorView.setAddNoteFailure();
+            }
         }
     }
 }

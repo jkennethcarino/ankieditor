@@ -11,8 +11,13 @@
     <string name="title_permissions_required">Permissions Required</string>
     <string name="msg_ad_api_permission_required">This app may not work correctly without the permission to read/write AnkiDroid database. Open AnkiDroid advanced settings screen to enable AnkiDroid API.</string>
     <string name="rationale_ad_api_permission_ask_again">This app needs permission to read/write AnkiDroid database.</string>
+
+    <!-- Snackbar messages -->
     <string name="sb_permission_denied">Permission denied.</string>
+    <string name="sb_add_note_success">Note has been added successfully.</string>
+    <string name="sb_add_note_failure">Error while adding your note.</string>
 
     <string name="text_type">Type:</string>
     <string name="text_deck">Deck:</string>
+    <string name="btn_add_note">Add Note</string>
 </resources>

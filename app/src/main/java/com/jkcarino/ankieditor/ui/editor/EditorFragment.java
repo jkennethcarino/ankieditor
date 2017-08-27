@@ -22,14 +22,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.ichi2.anki.api.AddContentApi;
@@ -40,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -48,15 +47,21 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class EditorFragment extends Fragment implements
         EditorContract.View, EasyPermissions.PermissionCallbacks {
 
-    public static final int RC_AD_READ_WRITE_PERM = 0x01;
+    private static final int RC_AD_READ_WRITE_PERM = 0x01;
 
     @BindView(R.id.note_type_spinner) Spinner noteTypesSpinner;
     @BindView(R.id.deck_spinner) Spinner noteDecksSpinner;
-    @BindView(R.id.note_fields_container) LinearLayout noteTypeFieldsContainer;
+    @BindView(R.id.note_fields_container) NoteTypeFieldsContainer noteTypeFieldsContainer;
 
     private View rootView;
     private Unbinder unbinder;
     private EditorContract.Presenter presenter;
+
+    /** ID of the selected note type */
+    private long noteTypeId;
+
+    /** ID of the selected deck */
+    private long deckId;
 
     public static EditorFragment newInstance() {
         return new EditorFragment();
@@ -138,7 +143,8 @@ public class EditorFragment extends Fragment implements
         noteTypesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                presenter.populateNoteTypeFields(ids.get(pos));
+                noteTypeId = ids.get(pos);
+                presenter.populateNoteTypeFields(noteTypeId);
             }
 
             @Override
@@ -157,7 +163,7 @@ public class EditorFragment extends Fragment implements
         noteDecksSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-
+                deckId = ids.get(pos);
             }
 
             @Override
@@ -169,15 +175,24 @@ public class EditorFragment extends Fragment implements
 
     @Override
     public void showNoteTypeFields(String[] fields) {
-        LayoutInflater inflater = LayoutInflater.from(rootView.getContext());
+        noteTypeFieldsContainer.addFields(fields);
+    }
 
-        noteTypeFieldsContainer.removeAllViews();
-        for (String field : fields) {
-            View view = inflater.inflate(R.layout.item_note_type_fields, null);
-            TextInputLayout textInputLayout = view.findViewById(R.id.note_field_til);
-            textInputLayout.setHint(field);
+    @Override
+    public void setAddNoteSuccess() {
+        noteTypeFieldsContainer.clearFields();
+        Snackbar.make(rootView, R.string.sb_add_note_success, Snackbar.LENGTH_SHORT).show();
+    }
 
-            noteTypeFieldsContainer.addView(view);
+    @Override
+    public void setAddNoteFailure() {
+        Snackbar.make(rootView, R.string.sb_add_note_failure, Snackbar.LENGTH_LONG).show();
+    }
+
+    @OnClick(R.id.add_note_button)
+    void onSaveClick() {
+        if (AnkiDroidHelper.isApiAvailable(getActivity())) {
+            presenter.addNote(noteTypeId, deckId, noteTypeFieldsContainer.getFieldsText());
         }
     }
 }

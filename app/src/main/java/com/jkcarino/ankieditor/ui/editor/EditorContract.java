@@ -35,6 +35,10 @@ public interface EditorContract {
         void showNoteDecks(List<Long> ids, List<String> noteDecks);
 
         void showNoteTypeFields(String[] fields);
+
+        void setAddNoteSuccess();
+
+        void setAddNoteFailure();
     }
 
     interface Presenter extends BasePresenter {
@@ -44,5 +48,7 @@ public interface EditorContract {
         void populateNoteDecks();
 
         void populateNoteTypeFields(long noteTypeId);
+
+        void addNote(long typeId, long deckId, String[] fields);
     }
 }

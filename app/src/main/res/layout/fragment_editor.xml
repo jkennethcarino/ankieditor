@@ -53,7 +53,6 @@
                 style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spinner_height"
-
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
@@ -64,8 +63,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingLeft="@dimen/activity_horizontal_margin"
-
-            android:paddingRight="@dimen/activity_horizontal_margin">>
+            android:paddingRight="@dimen/activity_horizontal_margin">
 
             <TextView
                 android:id="@+id/tv_deck"
@@ -85,7 +83,7 @@
         </LinearLayout>
 
         <!-- Fields -->
-        <LinearLayout
+        <com.jkcarino.ankieditor.ui.editor.NoteTypeFieldsContainer
             android:id="@+id/note_fields_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,5 +91,16 @@
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin" />
 
+        <Button
+            android:id="@+id/add_note_button"
+            style="@style/ButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:text="@string/btn_add_note" />
     </LinearLayout>
 </ScrollView>
