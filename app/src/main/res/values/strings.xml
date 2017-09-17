@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AnkiEditor</string>
     <string name="action_settings">Settings</string>
+    <string name="open_source_licenses">Open-source licenses</string>
 
     <!-- No AnkiDroid Installed -->
     <string name="title_no_ankidroid_installed">No AnkiDroid Installed</string>

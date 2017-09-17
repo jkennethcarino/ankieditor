@@ -62,7 +62,9 @@ public class EditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_open_source_licenses) {
+            LicensesDialogFragment licensesDialog = new LicensesDialogFragment();
+            licensesDialog.show(getSupportFragmentManager(), "licenses-dialog");
             return true;
         }
 
