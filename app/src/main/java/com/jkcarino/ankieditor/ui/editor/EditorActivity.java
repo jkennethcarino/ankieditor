@@ -30,6 +30,8 @@ import com.jkcarino.ankieditor.util.AnkiDroidHelper;
 
 public class EditorActivity extends AppCompatActivity {
 
+    private EditorPresenter presenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +49,7 @@ public class EditorActivity extends AppCompatActivity {
         }
 
         // Create the presenter
-        new EditorPresenter(fragment, new AnkiDroidHelper(this));
+        presenter = new EditorPresenter(fragment, new AnkiDroidHelper(this));
     }
 
     @Override
@@ -65,5 +67,11 @@ public class EditorActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        presenter.stop();
     }
 }

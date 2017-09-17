@@ -18,6 +18,7 @@
 package com.jkcarino.ankieditor.ui.editor;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,6 +33,7 @@ import android.widget.Spinner;
 
 import com.ichi2.anki.api.AddContentApi;
 import com.jkcarino.ankieditor.R;
+import com.jkcarino.ankieditor.ui.richeditor.RichEditorActivity;
 import com.jkcarino.ankieditor.util.AnkiDroidHelper;
 
 import java.util.List;
@@ -49,6 +51,8 @@ public class EditorFragment extends Fragment implements
 
     private static final int RC_AD_READ_WRITE_PERM = 0x01;
 
+    public static final int RC_FIELD_EDIT = 0x02;
+
     @BindView(R.id.note_type_spinner) Spinner noteTypesSpinner;
     @BindView(R.id.deck_spinner) Spinner noteDecksSpinner;
     @BindView(R.id.note_fields_container) NoteTypeFieldsContainer noteTypeFieldsContainer;
@@ -63,6 +67,7 @@ public class EditorFragment extends Fragment implements
     /** ID of the selected deck */
     private long deckId;
 
+    @NonNull
     public static EditorFragment newInstance() {
         return new EditorFragment();
     }
@@ -84,6 +89,7 @@ public class EditorFragment extends Fragment implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        noteTypeFieldsContainer.setOnFieldOptionsClickListener(null);
         unbinder.unbind();
         unbinder = null;
     }
@@ -96,6 +102,8 @@ public class EditorFragment extends Fragment implements
     private void loadAnkiEditor() {
         presenter.populateNoteTypes();
         presenter.populateNoteDecks();
+
+        noteTypeFieldsContainer.setOnFieldOptionsClickListener(onFieldOptionsClickListener);
     }
 
     @AfterPermissionGranted(RC_AD_READ_WRITE_PERM)
@@ -132,6 +140,12 @@ public class EditorFragment extends Fragment implements
             // TODO: Show a permission denied layout
             Snackbar.make(rootView, R.string.sb_permission_denied, Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        presenter.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -189,10 +203,29 @@ public class EditorFragment extends Fragment implements
         Snackbar.make(rootView, R.string.sb_add_note_failure, Snackbar.LENGTH_LONG).show();
     }
 
+    @Override
+    public void setFieldText(int index, @NonNull String text) {
+        noteTypeFieldsContainer.setFieldText(index, text);
+    }
+
     @OnClick(R.id.add_note_button)
     void onSaveClick() {
         if (AnkiDroidHelper.isApiAvailable(getActivity())) {
             presenter.addNote(noteTypeId, deckId, noteTypeFieldsContainer.getFieldsText());
         }
     }
+
+    private final NoteTypeFieldsContainer.OnFieldItemClickListener onFieldOptionsClickListener =
+            new NoteTypeFieldsContainer.OnFieldItemClickListener() {
+                @Override
+                public void onAdvancedEditorClick(int index,
+                                                  @NonNull String fieldName,
+                                                  @NonNull String text) {
+                    Intent intent = new Intent(getActivity(), RichEditorActivity.class);
+                    intent.putExtra(RichEditorActivity.EXTRA_FIELD_NAME, fieldName);
+                    intent.putExtra(RichEditorActivity.EXTRA_FIELD_INDEX, index);
+                    intent.putExtra(RichEditorActivity.EXTRA_FIELD_TEXT, text);
+                    startActivityForResult(intent, RC_FIELD_EDIT);
+                }
+            };
 }

@@ -44,7 +44,7 @@ public class NoteTypeFieldEditText extends TextInputEditText {
         if (TextUtils.isEmpty(text)) {
             text = "";
         }
-        setText(text.replace("<br>", NEW_LINE));
+        setText(text.replaceAll("<br(\\s*\\/*)>", NEW_LINE));
     }
 
     public String getFieldText() {

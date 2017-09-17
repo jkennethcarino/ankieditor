@@ -1,7 +1,12 @@
 <resources>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">8dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
     <dimen name="spinner_height">48dp</dimen>
     <dimen name="textview_label_width">56dp</dimen>
+
+    <dimen name="editor_toolbar_item_padding">16dp</dimen>
+    <dimen name="item_vertical_margin">16dp</dimen>
+    <dimen name="dialog_content_horizontal_padding">24dp</dimen>
+    <dimen name="dialog_content_top_padding">20dp</dimen>
+    <dimen name="dialog_content_bottom_padding">24dp</dimen>
 </resources>

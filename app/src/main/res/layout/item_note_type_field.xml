@@ -16,15 +16,36 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<android.support.design.widget.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/note_field_til"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
-    <com.jkcarino.ankieditor.ui.editor.NoteTypeFieldEditText
-        android:id="@+id/note_field_edittext"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/note_field_til"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:hint="Field" />
-</android.support.design.widget.TextInputLayout>
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/note_field_options"
+        android:layout_toStartOf="@+id/note_field_options">
+
+        <com.jkcarino.ankieditor.ui.editor.NoteTypeFieldEditText
+            android:id="@+id/note_field_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:hint="Field" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/note_field_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:padding="8dp"
+        app:srcCompat="@drawable/ic_more_options" />
+</RelativeLayout>

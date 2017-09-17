@@ -18,6 +18,7 @@
 package com.jkcarino.ankieditor.ui.editor;
 
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 
 import com.jkcarino.ankieditor.ui.BasePresenter;
@@ -39,6 +40,8 @@ public interface EditorContract {
         void setAddNoteSuccess();
 
         void setAddNoteFailure();
+
+        void setFieldText(int index, @NonNull String text);
     }
 
     interface Presenter extends BasePresenter {
@@ -50,5 +53,7 @@ public interface EditorContract {
         void populateNoteTypeFields(long noteTypeId);
 
         void addNote(long typeId, long deckId, String[] fields);
+
+        void onActivityResult(int requestCode, int resultCode, Intent data);
     }
 }

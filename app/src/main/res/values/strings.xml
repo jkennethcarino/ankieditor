@@ -20,4 +20,25 @@
     <string name="text_type">Type:</string>
     <string name="text_deck">Deck:</string>
     <string name="btn_add_note">Add Note</string>
+
+    <string name="action_undo">Undo</string>
+    <string name="action_redo">Redo</string>
+    <string name="action_done">Done</string>
+    <string name="insert">Insert</string>
+
+    <string name="dialog_title_text_color">Select a Text Color</string>
+    <string name="dialog_title_text_back_color">Select a Text Background Color</string>
+
+    <!-- Insert Table -->
+    <string name="title_insert_table">Insert Table</string>
+    <string name="hint_no_of_columns">Number of columns</string>
+    <string name="hint_no_of_rows">Number of rows</string>
+
+    <!-- Insert Link -->
+    <string name="title_insert_link">Insert Link</string>
+    <string name="hint_text_to_display">Text to display</string>
+    <string name="hint_link_to">Link to</string>
+    
+    <!-- Field Options -->
+    <string name="menu_advanced_editor">Advanced Editor</string>
 </resources>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2017 Jhon Kenneth Cariño
   ~
   ~ This program is free software: you can redistribute it and/or modify
@@ -20,8 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:fillViewport="true"
     tools:context=".ui.editor.EditorFragment"
     tools:showIn="@layout/activity_editor">
 
@@ -29,6 +29,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         tools:showIn="@layout/activity_editor">
 
         <!-- Note Type -->
@@ -78,7 +80,6 @@
                 style="@style/Base.Widget.AppCompat.Spinner.Underlined"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/spinner_height"
-
                 android:spinnerMode="dropdown" />
         </LinearLayout>
 
