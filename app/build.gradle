@@ -7,8 +7,8 @@ android {
         applicationId "com.jkcarino.ankieditor"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "0.1.0"
+        versionCode 2
+        versionName "0.1.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
@@ -40,7 +40,7 @@ dependencies {
     // Easy Permissions
     implementation 'pub.devrel:easypermissions:0.4.3'
 
-    // AnkiDroid API
+    // AnkiDroid Instant-Add API
     implementation 'com.ichi2.anki:api:1.1.0alpha5'
 
     // WYSIWYG Editor
