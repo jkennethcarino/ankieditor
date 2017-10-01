@@ -40,6 +40,8 @@ public class AnkiDroidHelper {
 
     private static final String ANKIDROID_PKG_NAME = "com.ichi2.anki";
 
+    public static final int RC_ANKIDROID_API = 0x1000;
+
     private Context context;
     private AddContentApi ankiDroidApi;
 
@@ -54,7 +56,7 @@ public class AnkiDroidHelper {
      * @param context The context of an application.
      * @return true if AnkiDroid is installed.
      */
-    private static boolean isAnkiDroidInstalled(@NonNull Context context) {
+    public static boolean isAnkiDroidInstalled(@NonNull Context context) {
         try {
             PackageManager pm = context.getApplicationContext().getPackageManager();
             pm.getPackageInfo(ANKIDROID_PKG_NAME, 0);
@@ -67,12 +69,12 @@ public class AnkiDroidHelper {
     /**
      * Launches AnkiDroid app.
      *
-     * @param context The context of an application.
+     * @param activity The context of an activity.
      */
-    private static void launchAnkiDroid(@NonNull Context context) {
-        PackageManager manager = context.getPackageManager();
-        Intent intent = manager.getLaunchIntentForPackage(ANKIDROID_PKG_NAME);
-        context.startActivity(intent);
+    private static void launchAnkiDroid(@NonNull Activity activity) {
+        Intent intent = new Intent();
+        intent.setClassName(ANKIDROID_PKG_NAME, ANKIDROID_PKG_NAME + ".IntentHandler");
+        activity.startActivityForResult(intent, RC_ANKIDROID_API);
     }
 
     /**
@@ -83,41 +85,30 @@ public class AnkiDroidHelper {
      * @param activity The context of an activity.
      * @return true if the API is available to use
      */
-    public static boolean isApiAvailable(@NonNull final Activity activity) {
+    public static boolean isApiAvailable(@NonNull final Activity activity, final boolean finish) {
         final Context context = activity.getApplicationContext();
 
         if (AddContentApi.getAnkiDroidPackageName(context) != null) {
             return true;
         } else {
-            int title = R.string.title_no_ankidroid_installed;
-            int message = R.string.msg_install_ankidroid;
-            int positiveButton = R.string.install;
-
             AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-
-            if (isAnkiDroidInstalled(context)) {
-                // AnkiDroid app is installed, but the AnkiDroid API is not available
-                title = R.string.title_permissions_required;
-                message = R.string.msg_ad_api_permission_required;
-                positiveButton = android.R.string.ok;
-            }
-
-            builder.setTitle(title);
-            builder.setMessage(message)
-                    .setPositiveButton(positiveButton, new DialogInterface.OnClickListener() {
+            builder.setTitle(R.string.title_permissions_required);
+            builder.setMessage(R.string.msg_ad_api_permission_required)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            if (isAnkiDroidInstalled(context)) {
-                                launchAnkiDroid(context);
-                            } else {
-                                PlayStoreUtils.openApp(activity, ANKIDROID_PKG_NAME);
-                            }
+                            launchAnkiDroid(activity);
                         }
                     })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(android.R.string.cancel,
+                            new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            activity.finish();
+                            if (finish) {
+                                activity.finish();
+                            } else {
+                                dialogInterface.cancel();
+                            }
                         }
                     });
             builder.setCancelable(false);
@@ -125,6 +116,37 @@ public class AnkiDroidHelper {
             builder.show();
         }
         return false;
+    }
+
+    public static boolean isApiAvailable(@NonNull final Activity activity) {
+        return isApiAvailable(activity, false);
+    }
+
+    /**
+     * Shows a dialog that informs the user to install AnkiDroid app on Google Play Store.
+     *
+     * @param activity The context of an activity
+     */
+    public static void showNoAnkiInstalledDialog(@NonNull final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+        builder.setTitle(R.string.title_no_ankidroid_installed);
+        builder.setMessage(R.string.msg_install_ankidroid)
+                .setPositiveButton(R.string.install, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        PlayStoreUtils.openApp(activity, ANKIDROID_PKG_NAME);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        activity.finish();
+                    }
+                });
+        builder.setCancelable(false);
+        builder.create();
+        builder.show();
     }
 
     public AddContentApi getApi() {

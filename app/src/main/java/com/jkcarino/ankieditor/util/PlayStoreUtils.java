@@ -26,6 +26,8 @@ import android.support.annotation.NonNull;
 
 public class PlayStoreUtils {
 
+    public static final int RC_OPEN_PLAY_STORE = 0x1001;
+
     /**
      * Opens an app on Google Play Store from the specified {@code packageName}.
      *
@@ -34,11 +36,12 @@ public class PlayStoreUtils {
      */
     public static void openApp(@NonNull Activity activity, @NonNull String packageName) {
         try {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=" + packageName)));
+            activity.startActivityForResult(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=" + packageName)), RC_OPEN_PLAY_STORE);
         } catch (ActivityNotFoundException e) {
-            activity.startActivity(new Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)));
+            activity.startActivityForResult(new Intent(Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)),
+                    RC_OPEN_PLAY_STORE);
         }
     }
 }
