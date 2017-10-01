@@ -16,7 +16,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -25,83 +25,99 @@
     tools:context=".ui.editor.EditorFragment"
     tools:showIn="@layout/activity_editor">
 
-    <LinearLayout
+    <ScrollView
+        android:id="@+id/editor_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="@dimen/activity_vertical_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        tools:context=".ui.editor.EditorFragment"
         tools:showIn="@layout/activity_editor">
 
-        <!-- Note Type -->
         <LinearLayout
-            android:id="@+id/view_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin">
-
-            <TextView
-                android:id="@+id/tv_type"
-                android:layout_width="@dimen/textview_label_width"
-                android:layout_height="wrap_content"
-                android:text="@string/text_type"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/note_type_spinner"
-                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/spinner_height"
-                android:spinnerMode="dropdown" />
-        </LinearLayout>
-
-        <!-- Deck -->
-        <LinearLayout
-            android:id="@+id/view_deck"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin">
-
-            <TextView
-                android:id="@+id/tv_deck"
-                android:layout_width="@dimen/textview_label_width"
-                android:layout_height="wrap_content"
-                android:layout_gravity="start|center_vertical"
-                android:text="@string/text_deck"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/deck_spinner"
-                style="@style/Base.Widget.AppCompat.Spinner.Underlined"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/spinner_height"
-                android:spinnerMode="dropdown" />
-        </LinearLayout>
-
-        <!-- Fields -->
-        <com.jkcarino.ankieditor.ui.editor.NoteTypeFieldsContainer
-            android:id="@+id/note_fields_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
             android:orientation="vertical"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin" />
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            tools:showIn="@layout/activity_editor">
 
-        <Button
-            android:id="@+id/add_note_button"
-            style="@style/ButtonStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginEnd="@dimen/activity_horizontal_margin"
-            android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:text="@string/btn_add_note" />
-    </LinearLayout>
-</ScrollView>
+            <!-- Note Type -->
+            <LinearLayout
+                android:id="@+id/view_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/tv_type"
+                    android:layout_width="@dimen/textview_label_width"
+                    android:layout_height="wrap_content"
+                    android:text="@string/text_type"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/note_type_spinner"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinner_height"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <!-- Deck -->
+            <LinearLayout
+                android:id="@+id/view_deck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin">
+
+                <TextView
+                    android:id="@+id/tv_deck"
+                    android:layout_width="@dimen/textview_label_width"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:text="@string/text_deck"
+                    android:textStyle="bold" />
+
+                <Spinner
+                    android:id="@+id/deck_spinner"
+                    style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/spinner_height"
+                    android:spinnerMode="dropdown" />
+            </LinearLayout>
+
+            <!-- Fields -->
+            <com.jkcarino.ankieditor.ui.editor.NoteTypeFieldsContainer
+                android:id="@+id/note_fields_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin" />
+
+            <Button
+                android:id="@+id/add_note_button"
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:text="@string/btn_add_note" />
+        </LinearLayout>
+    </ScrollView>
+
+    <ViewStub
+        android:id="@+id/request_permission_stub"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout="@layout/view_request_permission" />
+</FrameLayout>

@@ -18,12 +18,8 @@
 package com.jkcarino.ankieditor.ui.editor;
 
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import com.jkcarino.ankieditor.ui.richeditor.RichEditorActivity;
 import com.jkcarino.ankieditor.util.AnkiDroidHelper;
 
 import java.util.ArrayList;
@@ -95,21 +91,6 @@ public class EditorPresenter implements EditorContract.Presenter {
             } else {
                 editorView.setAddNoteFailure();
             }
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (editorView == null) {
-            return;
-        }
-
-        if (requestCode == EditorFragment.RC_FIELD_EDIT && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            int index = extras.getInt(RichEditorActivity.EXTRA_FIELD_INDEX);
-            String text = extras.getString(RichEditorActivity.EXTRA_FIELD_TEXT);
-
-            editorView.setFieldText(index, text);
         }
     }
 }

@@ -18,6 +18,7 @@
 package com.jkcarino.ankieditor.ui.editor;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,14 +28,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import com.ichi2.anki.api.AddContentApi;
 import com.jkcarino.ankieditor.R;
 import com.jkcarino.ankieditor.ui.richeditor.RichEditorActivity;
 import com.jkcarino.ankieditor.util.AnkiDroidHelper;
+import com.jkcarino.ankieditor.util.PlayStoreUtils;
 
 import java.util.List;
 
@@ -53,11 +57,15 @@ public class EditorFragment extends Fragment implements
 
     public static final int RC_FIELD_EDIT = 0x02;
 
+    @BindView(R.id.editor_layout) View editorLayout;
     @BindView(R.id.note_type_spinner) Spinner noteTypesSpinner;
     @BindView(R.id.deck_spinner) Spinner noteDecksSpinner;
     @BindView(R.id.note_fields_container) NoteTypeFieldsContainer noteTypeFieldsContainer;
+    @BindView(R.id.request_permission_stub) ViewStub requestPermissionStub;
 
     private View rootView;
+    private View requestPermissionView;
+
     private Unbinder unbinder;
     private EditorContract.Presenter presenter;
 
@@ -79,9 +87,7 @@ public class EditorFragment extends Fragment implements
         rootView = inflater.inflate(R.layout.fragment_editor, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-        if (AnkiDroidHelper.isApiAvailable(getActivity())) {
-            requestAnkiDroidPermissionIfNecessary();
-        }
+        checkAnkiDroidAvailability();
 
         return rootView;
     }
@@ -99,11 +105,45 @@ public class EditorFragment extends Fragment implements
         this.presenter = presenter;
     }
 
+    private void checkAnkiDroidAvailability() {
+        if (!AnkiDroidHelper.isAnkiDroidInstalled(getActivity())) {
+            AnkiDroidHelper.showNoAnkiInstalledDialog(getActivity());
+        } else {
+            if (AnkiDroidHelper.isApiAvailable(getActivity())) {
+                requestAnkiDroidPermissionIfNecessary();
+            }
+        }
+    }
+
     private void loadAnkiEditor() {
         presenter.populateNoteTypes();
         presenter.populateNoteDecks();
 
         noteTypeFieldsContainer.setOnFieldOptionsClickListener(onFieldOptionsClickListener);
+
+        if (requestPermissionView != null) {
+            requestPermissionView.setVisibility(View.GONE);
+        }
+        editorLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void setupRequestPermissionLayout() {
+        // Permission not yet granted, hide the main editor
+        editorLayout.setVisibility(View.GONE);
+
+        // Show request permission layout
+        requestPermissionView = requestPermissionStub.inflate();
+
+        Button allowButton = requestPermissionView.findViewById(R.id.allow_button);
+        allowButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EasyPermissions.requestPermissions(EditorFragment.this,
+                        getString(R.string.rationale_ad_api_permission_ask_again),
+                        RC_AD_READ_WRITE_PERM,
+                        AddContentApi.READ_WRITE_PERMISSION);
+            }
+        });
     }
 
     @AfterPermissionGranted(RC_AD_READ_WRITE_PERM)
@@ -112,10 +152,7 @@ public class EditorFragment extends Fragment implements
                 AddContentApi.READ_WRITE_PERMISSION)) {
             loadAnkiEditor();
         } else {
-            EasyPermissions.requestPermissions(this,
-                    getString(R.string.rationale_ad_api_permission_ask_again),
-                    RC_AD_READ_WRITE_PERM,
-                    AddContentApi.READ_WRITE_PERMISSION);
+            setupRequestPermissionLayout();
         }
     }
 
@@ -137,7 +174,6 @@ public class EditorFragment extends Fragment implements
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
         } else {
-            // TODO: Show a permission denied layout
             Snackbar.make(rootView, R.string.sb_permission_denied, Snackbar.LENGTH_LONG).show();
         }
     }
@@ -145,7 +181,32 @@ public class EditorFragment extends Fragment implements
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        presenter.onActivityResult(requestCode, resultCode, data);
+
+        switch (requestCode) {
+            case PlayStoreUtils.RC_OPEN_PLAY_STORE: {
+                checkAnkiDroidAvailability();
+                break;
+            }
+            case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE: {
+                if (EasyPermissions.hasPermissions(getActivity().getApplicationContext(),
+                        AddContentApi.READ_WRITE_PERMISSION)) {
+                    loadAnkiEditor();
+                }
+                break;
+            }
+            case EditorFragment.RC_FIELD_EDIT: {
+                if (resultCode != Activity.RESULT_OK) {
+                    break;
+                }
+
+                Bundle extras = data.getExtras();
+                int index = extras.getInt(RichEditorActivity.EXTRA_FIELD_INDEX);
+                String text = extras.getString(RichEditorActivity.EXTRA_FIELD_TEXT, "");
+
+                noteTypeFieldsContainer.setFieldText(index, text);
+                break;
+            }
+        }
     }
 
     @Override
@@ -203,15 +264,14 @@ public class EditorFragment extends Fragment implements
         Snackbar.make(rootView, R.string.sb_add_note_failure, Snackbar.LENGTH_LONG).show();
     }
 
-    @Override
-    public void setFieldText(int index, @NonNull String text) {
-        noteTypeFieldsContainer.setFieldText(index, text);
-    }
-
     @OnClick(R.id.add_note_button)
-    void onSaveClick() {
-        if (AnkiDroidHelper.isApiAvailable(getActivity())) {
-            presenter.addNote(noteTypeId, deckId, noteTypeFieldsContainer.getFieldsText());
+    void onAddNoteClick() {
+        if (!AnkiDroidHelper.isAnkiDroidInstalled(getActivity())) {
+            AnkiDroidHelper.showNoAnkiInstalledDialog(getActivity());
+        } else {
+            if (AnkiDroidHelper.isApiAvailable(getActivity())) {
+                presenter.addNote(noteTypeId, deckId, noteTypeFieldsContainer.getFieldsText());
+            }
         }
     }
 
