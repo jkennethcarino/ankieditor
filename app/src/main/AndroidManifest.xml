@@ -37,7 +37,8 @@
         </activity>
 
         <activity
-            android:name=".ui.editor.EditorActivity" />
+            android:name=".ui.editor.EditorActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".ui.richeditor.RichEditorActivity" />
     </application>
