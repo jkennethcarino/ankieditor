@@ -85,10 +85,19 @@ public class NoteTypeFieldsContainer extends LinearLayout {
                         public boolean onMenuItemClick(MenuItem item) {
                             int id = item.getItemId();
                             switch (id) {
-                                case R.id.menu_advanced_editor:
+                                case R.id.menu_cloze_deletion: {
+                                    String fieldText = fieldEditText.getText().toString();
+                                    int selectionStart = fieldEditText.getSelectionStart();
+                                    int selectionEnd = fieldEditText.getSelectionEnd();
+                                    listener.onClozeDeletionClick(
+                                            index, fieldText, selectionStart, selectionEnd);
+                                    break;
+                                }
+                                case R.id.menu_advanced_editor: {
                                     listener.onAdvancedEditorClick(
                                             index, fieldHint.getHint().toString(), text);
                                     break;
+                                }
                             }
 
                             return true;
@@ -136,6 +145,10 @@ public class NoteTypeFieldsContainer extends LinearLayout {
     }
 
     public interface OnFieldItemClickListener {
+
+        void onClozeDeletionClick(int index, @NonNull String text,
+                                  int selectionStart, int selectionEnd);
+
         void onAdvancedEditorClick(int index, @NonNull String fieldName, @NonNull String text);
     }
 }

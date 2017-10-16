@@ -3,4 +3,7 @@
     <item
         android:id="@+id/menu_advanced_editor"
         android:title="@string/menu_advanced_editor" />
+    <item
+        android:id="@+id/menu_cloze_deletion"
+        android:title="@string/menu_cloze_deletion" />
 </menu>

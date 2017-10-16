@@ -43,5 +43,6 @@
     <string name="hint_link_to">Link to</string>
     
     <!-- Field Options -->
-    <string name="menu_advanced_editor">Advanced Editor</string>
+    <string name="menu_advanced_editor">Advanced editor</string>
+    <string name="menu_cloze_deletion">Cloze deletion</string>
 </resources>

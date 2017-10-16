@@ -254,6 +254,11 @@ public class EditorFragment extends Fragment implements
     }
 
     @Override
+    public void setInsertedClozeText(int index, @NonNull String text) {
+        noteTypeFieldsContainer.setFieldText(index, text);
+    }
+
+    @Override
     public void setAddNoteSuccess() {
         noteTypeFieldsContainer.clearFields();
         Snackbar.make(rootView, R.string.sb_add_note_success, Snackbar.LENGTH_SHORT).show();
@@ -277,6 +282,13 @@ public class EditorFragment extends Fragment implements
 
     private final NoteTypeFieldsContainer.OnFieldItemClickListener onFieldOptionsClickListener =
             new NoteTypeFieldsContainer.OnFieldItemClickListener() {
+
+                @Override
+                public void onClozeDeletionClick(int index, @NonNull String text,
+                                                 int selectionStart, int selectionEnd) {
+                    presenter.insertClozeAround(index, text, selectionStart, selectionEnd);
+                }
+
                 @Override
                 public void onAdvancedEditorClick(int index,
                                                   @NonNull String fieldName,

@@ -83,6 +83,21 @@ public class EditorPresenter implements EditorContract.Presenter {
     }
 
     @Override
+    public void insertClozeAround(int index, @NonNull String text,
+                                  int selectionStart, int selectionEnd) {
+        if (editorView == null) {
+            return;
+        }
+
+        int selectionMin = Math.min(selectionStart, selectionEnd);
+        int selectionMax = Math.max(selectionStart, selectionEnd);
+        String insertedCloze = text.substring(0, selectionMin)
+                + "{{c1::" + text.substring(selectionMin, selectionMax)
+                + "}}" + text.substring(selectionMax);
+        editorView.setInsertedClozeText(index, insertedCloze);
+    }
+
+    @Override
     public void addNote(long typeId, long deckId, String[] fields) {
         if (editorView != null) {
             Long noteId = ankiDroidHelper.getApi().addNote(typeId, deckId, fields, null);

@@ -36,6 +36,8 @@ public interface EditorContract {
 
         void showNoteTypeFields(String[] fields);
 
+        void setInsertedClozeText(int index, @NonNull String text);
+
         void setAddNoteSuccess();
 
         void setAddNoteFailure();
@@ -48,6 +50,9 @@ public interface EditorContract {
         void populateNoteDecks();
 
         void populateNoteTypeFields(long noteTypeId);
+
+        void insertClozeAround(int index, @NonNull String text,
+                               int selectionStart, int selectionEnd);
 
         void addNote(long typeId, long deckId, String[] fields);
     }
