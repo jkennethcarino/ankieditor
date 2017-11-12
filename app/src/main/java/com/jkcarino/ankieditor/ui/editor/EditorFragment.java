@@ -293,10 +293,8 @@ public class EditorFragment extends Fragment implements
                 public void onAdvancedEditorClick(int index,
                                                   @NonNull String fieldName,
                                                   @NonNull String text) {
-                    Intent intent = new Intent(getActivity(), RichEditorActivity.class);
-                    intent.putExtra(RichEditorActivity.EXTRA_FIELD_NAME, fieldName);
-                    intent.putExtra(RichEditorActivity.EXTRA_FIELD_INDEX, index);
-                    intent.putExtra(RichEditorActivity.EXTRA_FIELD_TEXT, text);
+                    Intent intent = RichEditorActivity.newIntent(
+                            getActivity(), index, fieldName, text);
                     startActivityForResult(intent, RC_FIELD_EDIT);
                 }
             };

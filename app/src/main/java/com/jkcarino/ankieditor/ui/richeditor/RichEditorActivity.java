@@ -18,6 +18,7 @@
 package com.jkcarino.ankieditor.ui.richeditor;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -42,7 +43,7 @@ public class RichEditorActivity extends AppCompatActivity implements ColorPicker
     @BindView(R.id.editor_view) RTextEditorView editorView;
     @BindView(R.id.editor_toolbar) RTextEditorToolbar editorToolbar;
 
-    public static final String EXTRA_FIELD_NAME = "extra_field_name";
+    private static final String EXTRA_FIELD_NAME = "extra_field_name";
     public static final String EXTRA_FIELD_INDEX = "extra_field_index";
     public static final String EXTRA_FIELD_TEXT = "extra_field_text";
 
@@ -52,6 +53,15 @@ public class RichEditorActivity extends AppCompatActivity implements ColorPicker
     private Unbinder unbinder;
 
     private int fieldIndex;
+
+    public static Intent newIntent(@NonNull Context context, int index, @NonNull String fieldName,
+                                   @NonNull String text) {
+        Intent intent = new Intent(context, RichEditorActivity.class);
+        intent.putExtra(RichEditorActivity.EXTRA_FIELD_INDEX, index);
+        intent.putExtra(RichEditorActivity.EXTRA_FIELD_NAME, fieldName);
+        intent.putExtra(RichEditorActivity.EXTRA_FIELD_TEXT, text);
+        return intent;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
