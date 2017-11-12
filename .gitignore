@@ -1,5 +1,6 @@
 **/build
 **/production
+/app/release
 *.ap_
 *.apk
 *.class
