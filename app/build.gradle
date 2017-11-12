@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.1"
     defaultConfig {
         applicationId "com.jkcarino.ankieditor"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 5
         versionName "0.2.0"
 
@@ -23,7 +23,7 @@ android {
 }
 
 ext {
-    supportLibVersion = "26.1.0"
+    supportLibVersion = "27.0.1"
     constraintLayoutVersion = "1.0.2"
     butterKnifeVersion = "8.8.1"
     easyPermissionsVersion = "0.4.3"
