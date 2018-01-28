@@ -29,11 +29,11 @@ class AnkiDroidHelper(context: Context) {
 
     val api: AddContentApi = AddContentApi(context.applicationContext)
 
-    val noteTypes: Map<Long, String> =
-            api.modelList.toList().sortedBy { (_, value) -> value }.toMap()
+    val noteTypes: Map<Long, String>
+        get() = api.modelList.toList().sortedBy { (_, value) -> value }.toMap()
 
-    val noteDecks: Map<Long, String> =
-            api.deckList.toList().sortedBy { (_, value) -> value }.toMap()
+    val noteDecks: Map<Long, String>
+        get() = api.deckList.toList().sortedBy { (_, value) -> value }.toMap()
 
     fun getNoteTypeFields(noteTypeId: Long): Array<String> = api.getFieldList(noteTypeId)
 
