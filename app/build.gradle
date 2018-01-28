@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.1"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com.jkcarino.ankieditor"
         minSdkVersion 15
@@ -22,39 +24,27 @@ android {
     }
 }
 
-ext {
-    supportLibVersion = "27.0.1"
-    constraintLayoutVersion = "1.0.2"
-    butterKnifeVersion = "8.8.1"
-    easyPermissionsVersion = "0.4.3"
-    ankiDroidApiVersion = "1.1.0alpha5"
-    rTextEditorViewVersion = "0.1.1"
-    colorPickerVersion = "1.0.1"
-}
-
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     // Android Support Library
-    implementation "com.android.support:appcompat-v7:${supportLibVersion}"
-    implementation "com.android.support.constraint:constraint-layout:${constraintLayoutVersion}"
-    implementation "com.android.support:design:${supportLibVersion}"
-    implementation "com.android.support:support-vector-drawable:${supportLibVersion}"
-
-    // Butter Knife
-    implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    implementation "com.android.support:appcompat-v7:${versions.support_library}"
+    implementation "com.android.support.constraint:constraint-layout:${versions.constraint_layout}"
+    implementation "com.android.support:design:${versions.support_library}"
+    implementation "com.android.support:support-vector-drawable:${versions.support_library}"
 
     // Easy Permissions
-    implementation "pub.devrel:easypermissions:${easyPermissionsVersion}"
+    implementation "pub.devrel:easypermissions:${versions.easypermissions}"
 
     // AnkiDroid Instant-Add API
-    implementation "com.ichi2.anki:api:${ankiDroidApiVersion}"
+    implementation "com.ichi2.anki:api:${versions.ankidroid_api}"
 
     // WYSIWYG Editor
-    implementation "com.github.jkennethcarino:RTextEditorView:${rTextEditorViewVersion}"
-    implementation "com.jaredrummler:colorpicker:${colorPickerVersion}"
+    implementation "com.github.jkennethcarino:RTextEditorView:${versions.rtexteditorview}"
+    implementation "com.jaredrummler:colorpicker:${versions.color_picker}"
 }

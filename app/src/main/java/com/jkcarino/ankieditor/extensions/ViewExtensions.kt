@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 Jhon Kenneth Cariño
+ * Copyright (C) 2018 Jhon Kenneth Carino
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.jkcarino.ankieditor.ui;
+package com.jkcarino.ankieditor.extensions
 
+import android.support.annotation.StringRes
+import android.support.design.widget.Snackbar
+import android.view.View
 
-public interface BasePresenter {
-
-    void start();
-
-    void stop();
+fun View.showSnackBar(@StringRes messageResId: Int, duration: Int) {
+    Snackbar.make(this, context.getString(messageResId), duration).show()
 }
