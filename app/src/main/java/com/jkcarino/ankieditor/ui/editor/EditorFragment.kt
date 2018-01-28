@@ -145,7 +145,7 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     @AfterPermissionGranted(RC_AD_READ_WRITE_PERM)
     private fun requestAnkiDroidPermissionIfNecessary() {
         if (EasyPermissions.hasPermissions(
-                        activity?.applicationContext,
+                        activity!!.applicationContext,
                         AddContentApi.READ_WRITE_PERMISSION)) {
             loadAnkiEditor()
         } else {
