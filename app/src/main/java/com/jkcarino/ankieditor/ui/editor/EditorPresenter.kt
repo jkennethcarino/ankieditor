@@ -17,12 +17,23 @@
 
 package com.jkcarino.ankieditor.ui.editor
 
+import android.app.Activity
+import android.content.Intent
+import com.jkcarino.ankieditor.ui.richeditor.RichEditorActivity
 import com.jkcarino.ankieditor.util.AnkiDroidHelper
+import com.jkcarino.ankieditor.util.PlayStoreUtils
+import pub.devrel.easypermissions.AppSettingsDialog
 
 class EditorPresenter(
         private var editorView: EditorContract.View?,
         private var ankiDroidHelper: AnkiDroidHelper?
 ) : EditorContract.Presenter {
+
+    /** ID of the selected note type  */
+    override var currentNoteTypeId: Long = 0L
+
+    /** ID of the selected deck  */
+    override var currentDeckId: Long = 0L
 
     init {
         editorView?.setPresenter(this)
@@ -57,16 +68,40 @@ class EditorPresenter(
         }
     }
 
-    override fun populateNoteTypeFields(noteTypeId: Long) {
+    override fun populateNoteTypeFields() {
         editorView?.let { view ->
-            ankiDroidHelper?.getNoteTypeFields(noteTypeId)?.let { fields ->
+            ankiDroidHelper?.getNoteTypeFields(currentNoteTypeId)?.let { fields ->
                 view.showNoteTypeFields(fields)
             }
         }
     }
 
-    override fun insertClozeAround(index: Int, text: String,
-                                   selectionStart: Int, selectionEnd: Int) {
+    override fun result(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            PlayStoreUtils.RC_OPEN_PLAY_STORE -> {
+                editorView?.checkAnkiDroidAvailability()
+            }
+            AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE -> {
+                editorView?.checkAnkiDroidReadWritePermission()
+            }
+            EditorFragment.RC_FIELD_EDIT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.extras?.let {
+                        val index = it.getInt(RichEditorActivity.EXTRA_FIELD_INDEX)
+                        val text = it.getString(RichEditorActivity.EXTRA_FIELD_TEXT, "")
+                        editorView?.setRichEditorFieldText(index, text)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun insertClozeAround(
+            index: Int,
+            text: String,
+            selectionStart: Int,
+            selectionEnd: Int
+    ) {
         editorView?.let { view ->
             val selectionMin = Math.min(selectionStart, selectionEnd)
             val selectionMax = Math.max(selectionStart, selectionEnd)
@@ -77,9 +112,10 @@ class EditorPresenter(
         }
     }
 
-    override fun addNote(typeId: Long, deckId: Long, fields: Array<String?>) {
+    override fun addNote(fields: Array<String?>) {
         editorView?.let { view ->
-            val noteId = ankiDroidHelper?.api?.addNote(typeId, deckId, fields, null)
+            val noteId = ankiDroidHelper?.api?.addNote(
+                    currentNoteTypeId, currentDeckId, fields, null)
             if (noteId != null) {
                 view.setAddNoteSuccess()
             } else {

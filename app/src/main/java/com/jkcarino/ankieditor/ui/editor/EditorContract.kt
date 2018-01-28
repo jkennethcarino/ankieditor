@@ -17,6 +17,7 @@
 
 package com.jkcarino.ankieditor.ui.editor
 
+import android.content.Intent
 import com.jkcarino.ankieditor.ui.BasePresenter
 
 interface EditorContract {
@@ -24,6 +25,10 @@ interface EditorContract {
     interface View {
 
         fun setPresenter(presenter: Presenter)
+
+        fun checkAnkiDroidAvailability()
+
+        fun checkAnkiDroidReadWritePermission()
 
         fun showNoteTypes(ids: List<Long>, noteTypes: List<String>)
 
@@ -33,6 +38,8 @@ interface EditorContract {
 
         fun setInsertedClozeText(index: Int, text: String)
 
+        fun setRichEditorFieldText(index: Int, text: String)
+
         fun setAddNoteSuccess()
 
         fun setAddNoteFailure()
@@ -40,11 +47,17 @@ interface EditorContract {
 
     interface Presenter : BasePresenter {
 
+        var currentNoteTypeId: Long
+
+        var currentDeckId: Long
+
         fun populateNoteTypes()
 
         fun populateNoteDecks()
 
-        fun populateNoteTypeFields(noteTypeId: Long)
+        fun populateNoteTypeFields()
+
+        fun result(requestCode: Int, resultCode: Int, data: Intent?)
 
         fun insertClozeAround(
                 index: Int,
@@ -53,6 +66,6 @@ interface EditorContract {
                 selectionEnd: Int
         )
 
-        fun addNote(typeId: Long, deckId: Long, fields: Array<String?>)
+        fun addNote(fields: Array<String?>)
     }
 }

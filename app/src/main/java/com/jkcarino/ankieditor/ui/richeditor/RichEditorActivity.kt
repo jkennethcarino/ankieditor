@@ -167,9 +167,9 @@ class RichEditorActivity : AppCompatActivity(), ColorPickerDialogListener {
                 text: String
         ): Intent {
             return Intent(context, RichEditorActivity::class.java).apply {
-                putExtra(RichEditorActivity.EXTRA_FIELD_INDEX, index)
-                putExtra(RichEditorActivity.EXTRA_FIELD_NAME, fieldName)
-                putExtra(RichEditorActivity.EXTRA_FIELD_TEXT, text)
+                putExtra(EXTRA_FIELD_INDEX, index)
+                putExtra(EXTRA_FIELD_NAME, fieldName)
+                putExtra(EXTRA_FIELD_TEXT, text)
             }
         }
     }

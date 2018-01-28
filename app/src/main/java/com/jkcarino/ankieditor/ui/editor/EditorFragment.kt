@@ -17,7 +17,6 @@
 
 package com.jkcarino.ankieditor.ui.editor
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -32,7 +31,6 @@ import com.jkcarino.ankieditor.R
 import com.jkcarino.ankieditor.extensions.showSnackBar
 import com.jkcarino.ankieditor.ui.richeditor.RichEditorActivity
 import com.jkcarino.ankieditor.util.AnkiDroidHelper
-import com.jkcarino.ankieditor.util.PlayStoreUtils
 import kotlinx.android.synthetic.main.fragment_editor.*
 import kotlinx.android.synthetic.main.view_request_permission.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -44,12 +42,6 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     private lateinit var presenter: EditorContract.Presenter
 
     private var requestPermissionView: View? = null
-
-    /** ID of the selected note type  */
-    private var noteTypeId: Long = 0
-
-    /** ID of the selected deck  */
-    private var deckId: Long = 0
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -69,7 +61,7 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
                 AnkiDroidHelper.showNoAnkiInstalledDialog(activity!!)
             } else {
                 if (AnkiDroidHelper.isApiAvailable(activity!!)) {
-                    presenter.addNote(noteTypeId, deckId, note_fields_container.fieldsText)
+                    presenter.addNote(note_fields_container.fieldsText)
                 }
             }
         }
@@ -84,13 +76,20 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
         this.presenter = presenter
     }
 
-    private fun checkAnkiDroidAvailability() {
+    override fun checkAnkiDroidAvailability() {
         if (!AnkiDroidHelper.isAnkiDroidInstalled(activity!!)) {
             AnkiDroidHelper.showNoAnkiInstalledDialog(activity!!)
         } else {
             if (AnkiDroidHelper.isApiAvailable(activity!!)) {
                 requestAnkiDroidPermissionIfNecessary()
             }
+        }
+    }
+
+    override fun checkAnkiDroidReadWritePermission() {
+        if (EasyPermissions.hasPermissions(activity!!.applicationContext,
+                        AddContentApi.READ_WRITE_PERMISSION)) {
+            loadAnkiEditor()
         }
     }
 
@@ -176,28 +175,7 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            PlayStoreUtils.RC_OPEN_PLAY_STORE -> {
-                checkAnkiDroidAvailability()
-            }
-            AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE -> {
-                if (EasyPermissions.hasPermissions(activity!!.applicationContext,
-                                AddContentApi.READ_WRITE_PERMISSION)) {
-                    loadAnkiEditor()
-                }
-            }
-            EditorFragment.RC_FIELD_EDIT -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    data?.extras?.let {
-                        val index = it.getInt(RichEditorActivity.EXTRA_FIELD_INDEX)
-                        val text = it.getString(RichEditorActivity.EXTRA_FIELD_TEXT, "")
-
-                        note_fields_container.setFieldText(index, text)
-                    }
-                }
-            }
-        }
+        presenter.result(requestCode, resultCode, data)
     }
 
     override fun showNoteTypes(ids: List<Long>, noteTypes: List<String>) {
@@ -207,8 +185,8 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
         note_type_spinner.adapter = noteTypesAdapter
         note_type_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
-                noteTypeId = ids[pos]
-                presenter.populateNoteTypeFields(noteTypeId)
+                presenter.currentNoteTypeId = ids[pos]
+                presenter.populateNoteTypeFields()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) = Unit
@@ -222,7 +200,7 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
         deck_spinner.adapter = noteDecksAdapter
         deck_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
-                deckId = ids[pos]
+                presenter.currentDeckId = ids[pos]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) = Unit
@@ -237,6 +215,10 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
         note_fields_container.setFieldText(index, text)
     }
 
+    override fun setRichEditorFieldText(index: Int, text: String) {
+        note_fields_container.setFieldText(index, text)
+    }
+
     override fun setAddNoteSuccess() {
         note_fields_container.clearFields()
         view?.showSnackBar(R.string.sb_add_note_success, Snackbar.LENGTH_SHORT)
@@ -248,7 +230,8 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
 
     companion object {
         private const val RC_AD_READ_WRITE_PERM = 0x01
-        private const val RC_FIELD_EDIT = 0x02
+
+        const val RC_FIELD_EDIT = 0x02
 
         fun newInstance() = EditorFragment()
     }
