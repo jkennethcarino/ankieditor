@@ -17,8 +17,8 @@
 
 package com.jkcarino.ankieditor.extensions
 
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 
 /**
  * The `fragment` is added to the container view with id `frameId`. The operation is

@@ -19,11 +19,11 @@ package com.jkcarino.ankieditor.ui.richeditor
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.v4.app.FragmentManager
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatDialogFragment
 import android.view.LayoutInflater
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.fragment.app.FragmentManager
 import com.jkcarino.ankieditor.R
 import kotlinx.android.synthetic.main.dialog_insert_link.view.*
 

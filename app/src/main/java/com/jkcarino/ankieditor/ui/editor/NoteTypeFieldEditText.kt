@@ -18,10 +18,10 @@
 package com.jkcarino.ankieditor.ui.editor
 
 import android.content.Context
-import android.support.design.widget.TextInputEditText
 import android.util.AttributeSet
+import com.google.android.material.textfield.TextInputEditText
 
-class NoteTypeFieldEditText: TextInputEditText {
+class NoteTypeFieldEditText : TextInputEditText {
 
     var fieldText: String
         get() = text.toString().replace(NEW_LINE, "<br>")

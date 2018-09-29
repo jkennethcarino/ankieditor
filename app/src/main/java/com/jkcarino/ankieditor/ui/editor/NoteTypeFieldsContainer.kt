@@ -18,10 +18,10 @@
 package com.jkcarino.ankieditor.ui.editor
 
 import android.content.Context
-import android.support.v7.widget.LinearLayoutCompat
-import android.support.v7.widget.PopupMenu
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.appcompat.widget.PopupMenu
 import com.jkcarino.ankieditor.R
 import kotlinx.android.synthetic.main.item_note_type_field.view.*
 

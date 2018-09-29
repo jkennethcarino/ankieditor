@@ -18,9 +18,9 @@
 package com.jkcarino.ankieditor.ui.editor
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.jkcarino.ankieditor.R
 import com.jkcarino.ankieditor.extensions.addFragmentToActivity
 import com.jkcarino.ankieditor.util.AnkiDroidHelper

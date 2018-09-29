@@ -19,7 +19,7 @@ package com.jkcarino.ankieditor.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.jkcarino.ankieditor.R
 import com.jkcarino.ankieditor.ui.editor.EditorActivity
 import com.jkcarino.ankieditor.util.AnkiDroidHelper

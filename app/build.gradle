@@ -3,16 +3,15 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.jkcarino.ankieditor"
         minSdkVersion 15
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 8
         versionName "0.2.3"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
@@ -29,14 +28,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${versions.kotlin}"
 
     testImplementation "junit:junit:${versions.junit}"
-    androidTestImplementation "com.android.support.test:runner:${versions.test_runner}"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:${versions.espresso}"
+    androidTestImplementation "androidx.test:runner:${versions.test_runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
 
     // Android Support Library
-    implementation "com.android.support:appcompat-v7:${versions.support_library}"
-    implementation "com.android.support.constraint:constraint-layout:${versions.constraint_layout}"
-    implementation "com.android.support:design:${versions.support_library}"
-    implementation "com.android.support:support-vector-drawable:${versions.support_library}"
+    implementation "androidx.appcompat:appcompat:${versions.androidx}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraint_layout}"
+    implementation "com.google.android.material:material:${versions.material_components}"
+    implementation "androidx.vectordrawable:vectordrawable:${versions.androidx}"
 
     // Easy Permissions
     implementation "pub.devrel:easypermissions:${versions.easypermissions}"

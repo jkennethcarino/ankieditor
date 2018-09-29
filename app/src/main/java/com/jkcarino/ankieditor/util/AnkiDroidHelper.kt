@@ -21,7 +21,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.support.v7.app.AlertDialog
+import androidx.appcompat.app.AlertDialog
 import com.ichi2.anki.api.AddContentApi
 import com.jkcarino.ankieditor.R
 

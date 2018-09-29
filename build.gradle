@@ -1,17 +1,18 @@
 
 buildscript {
     ext.versions = [
-            'android_gradle'   : '3.2.0',
-            'junit'            : '4.12',
-            'test_runner'      : '1.0.2',
-            'espresso'         : '3.0.2',
-            'support_library'  : '27.1.1',
-            'constraint_layout': '1.1.3',
-            'kotlin'           : '1.2.71',
-            'easypermissions'  : '1.1.3',
-            'ankidroid_api'    : '1.1.0alpha6',
-            'rtexteditorview'  : '0.1.1',
-            'color_picker'     : '1.0.1'
+            'android_gradle'      : '3.2.0',
+            'junit'               : '4.12',
+            'test_runner'         : '1.1.0-alpha4',
+            'espresso'            : '3.1.0-alpha4',
+            'androidx'            : '1.0.0',
+            'constraint_layout'   : '2.0.0-alpha2',
+            'material_components' : '1.0.0',
+            'kotlin'              : '1.2.71',
+            'easypermissions'     : '2.0.0',
+            'ankidroid_api'       : '1.1.0alpha6',
+            'rtexteditorview'     : '0.1.1',
+            'color_picker'        : '1.0.1'
     ]
 
     repositories {

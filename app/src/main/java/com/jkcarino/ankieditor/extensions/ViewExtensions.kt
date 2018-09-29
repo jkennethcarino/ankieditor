@@ -17,9 +17,9 @@
 
 package com.jkcarino.ankieditor.extensions
 
-import android.support.annotation.StringRes
-import android.support.design.widget.Snackbar
 import android.view.View
+import androidx.annotation.StringRes
+import com.google.android.material.snackbar.Snackbar
 
 fun View.showSnackBar(@StringRes messageResId: Int, duration: Int) {
     Snackbar.make(this, context.getString(messageResId), duration).show()

@@ -21,12 +21,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.jkcarino.ankieditor.R
+import com.jkcarino.rtexteditorview.RTextEditorButton
 import kotlinx.android.synthetic.main.activity_rich_editor.*
 
 class RichEditorActivity : AppCompatActivity(), ColorPickerDialogListener {
