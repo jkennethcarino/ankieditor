@@ -30,6 +30,8 @@ interface EditorContract {
 
         fun checkAnkiDroidReadWritePermission()
 
+        fun showAnkiDroidError(message: String)
+
         fun showNoteTypes(ids: List<Long>, noteTypes: List<String>)
 
         fun showNoteDecks(ids: List<Long>, noteDecks: List<String>)
@@ -51,9 +53,7 @@ interface EditorContract {
 
         var currentDeckId: Long
 
-        fun populateNoteTypes()
-
-        fun populateNoteDecks()
+        fun setupNoteTypesAndDecks()
 
         fun populateNoteTypeFields()
 

@@ -48,22 +48,24 @@ class EditorPresenter(
         ankiDroidHelper = null
     }
 
-    override fun populateNoteTypes() {
+    override fun setupNoteTypesAndDecks() {
         editorView?.let { view ->
-            ankiDroidHelper?.noteTypes?.let { noteTypes ->
-                val noteTypeIds = ArrayList<Long>(noteTypes.keys)
-                val noteTypesList = ArrayList<String>(noteTypes.values)
-                view.showNoteTypes(noteTypeIds, noteTypesList)
-            }
-        }
-    }
+            try {
+                // Display all note types
+                ankiDroidHelper?.noteTypes?.let { noteTypes ->
+                    val noteTypeIds = ArrayList<Long>(noteTypes.keys)
+                    val noteTypesList = ArrayList<String>(noteTypes.values)
+                    view.showNoteTypes(noteTypeIds, noteTypesList)
+                }
 
-    override fun populateNoteDecks() {
-        editorView?.let { view ->
-            ankiDroidHelper?.noteDecks?.let { noteDecks ->
-                val noteDeckIds = ArrayList<Long>(noteDecks.keys)
-                val noteDecksList = ArrayList<String>(noteDecks.values)
-                view.showNoteDecks(noteDeckIds, noteDecksList)
+                // Display all note decks
+                ankiDroidHelper?.noteDecks?.let { noteDecks ->
+                    val noteDeckIds = ArrayList<Long>(noteDecks.keys)
+                    val noteDecksList = ArrayList<String>(noteDecks.values)
+                    view.showNoteDecks(noteDeckIds, noteDecksList)
+                }
+            } catch (e: IllegalStateException) {
+                view.showAnkiDroidError(e.localizedMessage)
             }
         }
     }
@@ -115,7 +117,11 @@ class EditorPresenter(
     override fun addNote(fields: Array<String?>) {
         editorView?.let { view ->
             val noteId = ankiDroidHelper?.api?.addNote(
-                    currentNoteTypeId, currentDeckId, fields, null)
+                    currentNoteTypeId,
+                    currentDeckId,
+                    fields,
+                    null
+            )
             if (noteId != null) {
                 view.setAddNoteSuccess()
             } else {

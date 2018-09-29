@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import com.ichi2.anki.api.AddContentApi
@@ -94,8 +95,7 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     }
 
     private fun loadAnkiEditor() {
-        presenter.populateNoteTypes()
-        presenter.populateNoteDecks()
+        presenter.setupNoteTypesAndDecks()
 
         note_fields_container.onFieldOptionsClickListener = onFieldOptionsClickListener
 
@@ -176,6 +176,18 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         presenter.result(requestCode, resultCode, data)
+    }
+
+    override fun showAnkiDroidError(message: String) {
+        AlertDialog.Builder(activity!!).apply {
+            setTitle(R.string.dialog_title_ankidroid_error)
+            setMessage(message)
+            setPositiveButton(android.R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+                activity?.finish()
+            }
+            setCancelable(false)
+        }.create().show()
     }
 
     override fun showNoteTypes(ids: List<Long>, noteTypes: List<String>) {

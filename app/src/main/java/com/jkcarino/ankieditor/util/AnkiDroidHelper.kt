@@ -35,7 +35,7 @@ class AnkiDroidHelper(context: Context) {
     val noteDecks: Map<Long, String>
         get() = api.deckList.toList().sortedBy { (_, value) -> value }.toMap()
 
-    fun getNoteTypeFields(noteTypeId: Long): Array<String> = api.getFieldList(noteTypeId)
+    fun getNoteTypeFields(noteTypeId: Long): Array<String>? = api.getFieldList(noteTypeId)
 
     companion object {
         private const val ANKIDROID_PKG_NAME = "com.ichi2.anki"
@@ -64,7 +64,7 @@ class AnkiDroidHelper(context: Context) {
          */
         private fun launchAnkiDroid(activity: Activity) {
             val intent = Intent().apply {
-                setClassName(ANKIDROID_PKG_NAME, ANKIDROID_PKG_NAME + ".IntentHandler")
+                setClassName(ANKIDROID_PKG_NAME, "$ANKIDROID_PKG_NAME.IntentHandler")
             }
             activity.startActivityForResult(intent, RC_ANKIDROID_API)
         }

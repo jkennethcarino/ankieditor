@@ -29,6 +29,7 @@
     <string name="action_done">Done</string>
     <string name="insert">Insert</string>
 
+    <string name="dialog_title_ankidroid_error">AnkiDroid Error</string>
     <string name="dialog_title_text_color">Select a Text Color</string>
     <string name="dialog_title_text_back_color">Select a Text Background Color</string>
 
