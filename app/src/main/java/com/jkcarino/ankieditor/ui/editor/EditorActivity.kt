@@ -38,7 +38,10 @@ class EditorActivity : AppCompatActivity() {
         // Create the fragment
         val fragment: EditorFragment = supportFragmentManager.findFragmentById(R.id.content_frame)
                 as? EditorFragment ?: EditorFragment.newInstance()
-        addFragmentToActivity(supportFragmentManager, fragment, R.id.content_frame)
+
+        if (savedInstanceState == null) {
+            addFragmentToActivity(supportFragmentManager, fragment, R.id.content_frame)
+        }
 
         // Create the presenter
         presenter = EditorPresenter(fragment, AnkiDroidHelper(this)).also { it.start() }
