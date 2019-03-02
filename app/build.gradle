@@ -35,7 +35,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:${versions.androidx}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.constraint_layout}"
     implementation "com.google.android.material:material:${versions.material_components}"
-    implementation "androidx.vectordrawable:vectordrawable:${versions.androidx}"
+    implementation "androidx.vectordrawable:vectordrawable:${versions.vector_drawable}"
 
     // Easy Permissions
     implementation "pub.devrel:easypermissions:${versions.easypermissions}"
