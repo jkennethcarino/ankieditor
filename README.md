@@ -4,7 +4,12 @@ AnkiEditor for AnkiDroid
 
 AnkiEditor is an advanced note editor plug-in for [AnkiDroid](https://github.com/ankidroid/Anki-Android), a [spaced repetition][srswiki] flashcard program for Android. AnkiEditor allows you to create basic notes; use WYSIWYG editor that can format text, set text foreground and background color, insert table/link, etc. similar to Anki's note editor on PCs.
 
-<a href="https://play.google.com/store/apps/details?id=com.jkcarino.ankieditor"><img src="/art/google-play-badge.png" width="28%" /></a>
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png"
+     alt="Get it on Google Play"
+     height="80">](https://play.google.com/store/apps/details?id=com.jkcarino.ankieditor)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+     alt="Get it on F-Droid"
+     height="80">](https://f-droid.org/packages/com.jkcarino.ankieditor/)
 
 Screenshots
 ------
