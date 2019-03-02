@@ -17,7 +17,6 @@
 
 package com.jkcarino.ankieditor.ui.editor
 
-import android.content.Intent
 import com.jkcarino.ankieditor.ui.BasePresenter
 
 interface EditorContract {
@@ -57,13 +56,11 @@ interface EditorContract {
 
         fun populateNoteTypeFields()
 
-        fun result(requestCode: Int, resultCode: Int, data: Intent?)
-
         fun insertClozeAround(
-                index: Int,
-                text: String,
-                selectionStart: Int,
-                selectionEnd: Int
+            index: Int,
+            text: String,
+            selectionStart: Int,
+            selectionEnd: Int
         )
 
         fun addNote(fields: Array<String?>)

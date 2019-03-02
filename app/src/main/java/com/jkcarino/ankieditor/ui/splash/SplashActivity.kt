@@ -17,60 +17,78 @@
 
 package com.jkcarino.ankieditor.ui.splash
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.jkcarino.ankieditor.R
 import com.jkcarino.ankieditor.ui.editor.EditorActivity
 import com.jkcarino.ankieditor.util.AnkiDroidHelper
 import com.jkcarino.ankieditor.util.PlayStoreUtils
+import com.jkcarino.ankieditor.util.WeakRunnable
 
-class SplashActivity : AppCompatActivity(), SplashContract.View {
+class SplashActivity : AppCompatActivity() {
 
-    private lateinit var presenter: SplashPresenter
+    private var handler: Handler? = null
+
+    private val weakRunnable = WeakRefRunnable(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        presenter = SplashPresenter(this)
-
         if (isTaskRoot) {
             // Start showing the splash screen
-            presenter.start()
+            if (handler == null) {
+                handler = Handler()
+
+                // Start the splash screen
+                handler?.postDelayed(weakRunnable, SPLASH_TIMEOUT_IN_MILLIS)
+            }
         } else {
             finish()
         }
     }
 
     override fun onDestroy() {
-        presenter.stop()
+        handler?.removeCallbacks(weakRunnable)
+        handler = null
         super.onDestroy()
-    }
-
-    private fun showMainEditor() {
-        startActivity(Intent(this, EditorActivity::class.java)).also {
-            finish()
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
-        }
-    }
-
-    override fun checkAnkiDroidAvailability() {
-        if (!AnkiDroidHelper.isAnkiDroidInstalled(this)) {
-            AnkiDroidHelper.showNoAnkiInstalledDialog(this)
-        } else {
-            if (AnkiDroidHelper.isApiAvailable(this, /* finish */ true)) {
-                showMainEditor()
-            }
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         when (requestCode) {
-            AnkiDroidHelper.RC_ANKIDROID_API, PlayStoreUtils.RC_OPEN_PLAY_STORE ->
-                checkAnkiDroidAvailability()
+            AnkiDroidHelper.RC_ANKIDROID_API,
+            PlayStoreUtils.RC_OPEN_PLAY_STORE -> {
+                handler?.post(weakRunnable)
+            }
         }
+    }
+
+    private class WeakRefRunnable(act: Activity) : WeakRunnable<Activity>(act) {
+
+        override fun run(referent: Activity) {
+            if (!AnkiDroidHelper.isAnkiDroidInstalled(referent)) {
+                AnkiDroidHelper.showNoAnkiInstalledDialog(referent)
+            } else {
+                if (AnkiDroidHelper.isApiAvailable(referent, /* finish */ true)) {
+                    val intent = Intent(referent, EditorActivity::class.java)
+                    referent.startActivity(intent).also {
+                        referent.finish()
+                        referent.overridePendingTransition(
+                            android.R.anim.fade_in,
+                            android.R.anim.fade_out
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val SPLASH_TIMEOUT_IN_MILLIS = 500L
     }
 }

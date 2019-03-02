@@ -37,7 +37,7 @@ class EditorActivity : AppCompatActivity() {
 
         // Create the fragment
         val fragment: EditorFragment = supportFragmentManager.findFragmentById(R.id.content_frame)
-                as? EditorFragment ?: EditorFragment.newInstance()
+            as? EditorFragment ?: EditorFragment.newInstance()
 
         if (savedInstanceState == null) {
             addFragmentToActivity(supportFragmentManager, fragment, R.id.content_frame)
@@ -57,7 +57,7 @@ class EditorActivity : AppCompatActivity() {
         return when (id) {
             R.id.action_open_source_licenses -> {
                 LicensesDialogFragment()
-                        .show(supportFragmentManager, LicensesDialogFragment.DIALOG_TAG)
+                    .show(supportFragmentManager, LicensesDialogFragment.DIALOG_TAG)
                 true
             }
             else -> super.onOptionsItemSelected(item)

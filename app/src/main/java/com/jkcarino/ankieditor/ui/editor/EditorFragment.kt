@@ -17,6 +17,7 @@
 
 package com.jkcarino.ankieditor.ui.editor
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,6 +33,7 @@ import com.jkcarino.ankieditor.R
 import com.jkcarino.ankieditor.extensions.showSnackBar
 import com.jkcarino.ankieditor.ui.richeditor.RichEditorActivity
 import com.jkcarino.ankieditor.util.AnkiDroidHelper
+import com.jkcarino.ankieditor.util.PlayStoreUtils
 import kotlinx.android.synthetic.main.fragment_editor.*
 import kotlinx.android.synthetic.main.view_request_permission.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -45,9 +47,9 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     private var requestPermissionView: View? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_editor, container, false)
     }
@@ -88,8 +90,11 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     }
 
     override fun checkAnkiDroidReadWritePermission() {
-        if (EasyPermissions.hasPermissions(activity!!.applicationContext,
-                        AddContentApi.READ_WRITE_PERMISSION)) {
+        if (EasyPermissions.hasPermissions(
+                activity!!.applicationContext,
+                AddContentApi.READ_WRITE_PERMISSION
+            )
+        ) {
             loadAnkiEditor()
         }
     }
@@ -104,26 +109,26 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     }
 
     private val onFieldOptionsClickListener =
-            object : NoteTypeFieldsContainer.OnFieldOptionsClickListener {
+        object : NoteTypeFieldsContainer.OnFieldOptionsClickListener {
 
-                override fun onClozeDeletionClick(
-                        index: Int,
-                        text: String,
-                        selectionStart: Int,
-                        selectionEnd: Int
-                ) {
-                    presenter.insertClozeAround(index, text, selectionStart, selectionEnd)
-                }
-
-                override fun onAdvancedEditorClick(
-                        index: Int,
-                        fieldName: String,
-                        text: String
-                ) {
-                    val intent = RichEditorActivity.newIntent(activity!!, index, fieldName, text)
-                    startActivityForResult(intent, RC_FIELD_EDIT)
-                }
+            override fun onClozeDeletionClick(
+                index: Int,
+                text: String,
+                selectionStart: Int,
+                selectionEnd: Int
+            ) {
+                presenter.insertClozeAround(index, text, selectionStart, selectionEnd)
             }
+
+            override fun onAdvancedEditorClick(
+                index: Int,
+                fieldName: String,
+                text: String
+            ) {
+                val intent = RichEditorActivity.newIntent(activity!!, index, fieldName, text)
+                startActivityForResult(intent, RC_FIELD_EDIT)
+            }
+        }
 
     private fun setupRequestPermissionLayout() {
         // Permission not yet granted, hide the main editor
@@ -134,10 +139,10 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
 
         allow_button.setOnClickListener {
             EasyPermissions.requestPermissions(
-                    this@EditorFragment,
-                    getString(R.string.rationale_ad_api_permission_ask_again),
-                    RC_AD_READ_WRITE_PERM,
-                    AddContentApi.READ_WRITE_PERMISSION
+                this@EditorFragment,
+                getString(R.string.rationale_ad_api_permission_ask_again),
+                RC_AD_READ_WRITE_PERM,
+                AddContentApi.READ_WRITE_PERMISSION
             )
         }
     }
@@ -145,8 +150,10 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     @AfterPermissionGranted(RC_AD_READ_WRITE_PERM)
     private fun requestAnkiDroidPermissionIfNecessary() {
         if (EasyPermissions.hasPermissions(
-                        activity!!.applicationContext,
-                        AddContentApi.READ_WRITE_PERMISSION)) {
+                activity!!.applicationContext,
+                AddContentApi.READ_WRITE_PERMISSION
+            )
+        ) {
             loadAnkiEditor()
         } else {
             setupRequestPermissionLayout()
@@ -154,9 +161,9 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -175,7 +182,23 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        presenter.result(requestCode, resultCode, data)
+        when (requestCode) {
+            PlayStoreUtils.RC_OPEN_PLAY_STORE -> {
+                checkAnkiDroidAvailability()
+            }
+            AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE -> {
+                checkAnkiDroidReadWritePermission()
+            }
+            EditorFragment.RC_FIELD_EDIT -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    data?.extras?.let {
+                        val index = it.getInt(RichEditorActivity.EXTRA_FIELD_INDEX)
+                        val text = it.getString(RichEditorActivity.EXTRA_FIELD_TEXT, "")
+                        setRichEditorFieldText(index, text)
+                    }
+                }
+            }
+        }
     }
 
     override fun showAnkiDroidError(message: String) {
@@ -193,7 +216,7 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     override fun showNoteTypes(ids: List<Long>, noteTypes: List<String>) {
         // Update the note types spinner
         val noteTypesAdapter =
-                ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, noteTypes)
+            ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, noteTypes)
         note_type_spinner.adapter = noteTypesAdapter
         note_type_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
@@ -208,7 +231,7 @@ class EditorFragment : Fragment(), EditorContract.View, EasyPermissions.Permissi
     override fun showNoteDecks(ids: List<Long>, noteDecks: List<String>) {
         // Update the note decks spinner
         val noteDecksAdapter =
-                ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, noteDecks)
+            ArrayAdapter(activity, android.R.layout.simple_spinner_dropdown_item, noteDecks)
         deck_spinner.adapter = noteDecksAdapter
         deck_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {

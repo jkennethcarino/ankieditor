@@ -26,9 +26,9 @@ import com.jkcarino.ankieditor.R
 import kotlinx.android.synthetic.main.item_note_type_field.view.*
 
 class NoteTypeFieldsContainer @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ) : LinearLayoutCompat(context, attrs, defStyleAttr) {
 
     var onFieldOptionsClickListener: OnFieldOptionsClickListener? = null
@@ -71,11 +71,12 @@ class NoteTypeFieldsContainer @JvmOverloads constructor(
                                 val selectionStart = fieldEditText.selectionStart
                                 val selectionEnd = fieldEditText.selectionEnd
                                 onFieldOptionsClickListener?.onClozeDeletionClick(
-                                        index, fieldText, selectionStart, selectionEnd)
+                                    index, fieldText, selectionStart, selectionEnd
+                                )
                             }
                             R.id.menu_advanced_editor -> {
                                 onFieldOptionsClickListener?.onAdvancedEditorClick(
-                                        index, fieldHint.hint.toString(), text
+                                    index, fieldHint.hint.toString(), text
                                 )
                             }
                         }
@@ -100,8 +101,8 @@ class NoteTypeFieldsContainer @JvmOverloads constructor(
 
     fun clearFields() {
         (0 until childCount)
-                .map { getChildAt(it).note_field_edittext }
-                .forEach { it.text = null }
+            .map { getChildAt(it).note_field_edittext }
+            .forEach { it.text = null }
 
         // Set the focus to the first field
         getChildAt(0).note_field_edittext.requestFocus()

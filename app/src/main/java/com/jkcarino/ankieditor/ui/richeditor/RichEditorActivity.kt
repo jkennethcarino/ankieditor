@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.jaredrummler.android.colorpicker.ColorPickerDialog
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener
 import com.jkcarino.ankieditor.R
-import com.jkcarino.rtexteditorview.RTextEditorButton
 import kotlinx.android.synthetic.main.activity_rich_editor.*
 
 class RichEditorActivity : AppCompatActivity(), ColorPickerDialogListener {
@@ -35,18 +34,18 @@ class RichEditorActivity : AppCompatActivity(), ColorPickerDialogListener {
     private var fieldIndex: Int = 0
 
     private val onInsertTableClickListener =
-            object : InsertTableDialogFragment.OnInsertClickListener {
-                override fun onInsertClick(colCount: Int, rowCount: Int) {
-                    editor_view.insertTable(colCount, rowCount)
-                }
+        object : InsertTableDialogFragment.OnInsertClickListener {
+            override fun onInsertClick(colCount: Int, rowCount: Int) {
+                editor_view.insertTable(colCount, rowCount)
             }
+        }
 
     private val onInsertLinkClickListener =
-            object : InsertLinkDialogFragment.OnInsertClickListener {
-                override fun onInsertClick(title: String, url: String) {
-                    editor_view.insertLink(title, url)
-                }
+        object : InsertLinkDialogFragment.OnInsertClickListener {
+            override fun onInsertClick(title: String, url: String) {
+                editor_view.insertLink(title, url)
             }
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -162,10 +161,10 @@ class RichEditorActivity : AppCompatActivity(), ColorPickerDialogListener {
         private const val DIALOG_INSERT_LINK_TAG = "insert-link-dialog"
 
         fun newIntent(
-                context: Context,
-                index: Int,
-                fieldName: String,
-                text: String
+            context: Context,
+            index: Int,
+            fieldName: String,
+            text: String
         ): Intent {
             return Intent(context, RichEditorActivity::class.java).apply {
                 putExtra(EXTRA_FIELD_INDEX, index)

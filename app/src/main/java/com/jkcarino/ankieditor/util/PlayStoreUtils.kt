@@ -34,12 +34,20 @@ object PlayStoreUtils {
      */
     fun openApp(activity: Activity, packageName: String) {
         try {
-            activity.startActivityForResult(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("market://details?id=" + packageName)), RC_OPEN_PLAY_STORE)
+            activity.startActivityForResult(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("market://details?id=$packageName")
+                ), RC_OPEN_PLAY_STORE
+            )
         } catch (e: ActivityNotFoundException) {
-            activity.startActivityForResult(Intent(Intent.ACTION_VIEW,
-                    Uri.parse("https://play.google.com/store/apps/details?id=" + packageName)),
-                    RC_OPEN_PLAY_STORE)
+            activity.startActivityForResult(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://play.google.com/store/apps/details?id=$packageName")
+                ),
+                RC_OPEN_PLAY_STORE
+            )
         }
     }
 }
