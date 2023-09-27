@@ -1,25 +1,20 @@
 version: 2.1
 orbs:
-  #python: circleci/python@2.0.3
-  #heroku: circleci/heroku@1.2.6
-  #android: circleci/android@2.3.0
+  android: circleci/android@1.0.3
 
-  gradle: circleci/gradle@3.0.0
+jobs:
+  build-android:
+    executor: android/android
 
-  build_release:
-    executor:
-      name: android/android-machine
-      resource-class: large
-      tag: 2022.12.1
     steps:
       - checkout
-      - run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug
-      - store_artifacts:
-          #path: candybar/app/build/outputs/apk/debug/candybar-v1-debug.apk
+      - android/restore-build-cache
+      - android/restore-gradle-cache
+      - run:
+          name: Run Android tests
+          command: ./gradlew androidApp:testDebugUnitTest
+      - android/save-gradle-cache
+      - android/save-build-cache
 
-workflows:
-  test_my_app:
-    jobs:
-      - build_release
+      - store_artifacts:
+          path: androidApp/build/outputs/apk/debug
