@@ -4,6 +4,8 @@ orbs:
   heroku: circleci/heroku@1.2.6
   android: circleci/android@2.3.0
 
+  gradle: circleci/gradle@3.0.0
+
   build_release:
     executor:
       name: android/android-machine
