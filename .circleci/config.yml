@@ -1,8 +1,8 @@
 version: 2.1
 orbs:
-  python: circleci/python@2.0.3
-  heroku: circleci/heroku@1.2.6
-  android: circleci/android@2.3.0
+  #python: circleci/python@2.0.3
+  #heroku: circleci/heroku@1.2.6
+  #android: circleci/android@2.3.0
 
   gradle: circleci/gradle@3.0.0
 
